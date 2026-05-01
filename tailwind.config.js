@@ -10,8 +10,8 @@ module.exports = {
       colors: {
         primary: "#10B981",
         danger: "#EF4444",
-        surface: "#1F2937",
-        background: "#111827",
+        surface: "#FFFFFF",
+        background: "#F3F4F6",
       },
     },
   },

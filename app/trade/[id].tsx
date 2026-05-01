@@ -148,7 +148,6 @@ export default function EditTradeScreen() {
       className="flex-1 bg-background"
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
-      {/* Header */}
       <View className="px-4 pt-14 pb-4 flex-row items-center">
         <TouchableOpacity
           onPress={() =>
@@ -159,37 +158,37 @@ export default function EditTradeScreen() {
           className="mr-3"
           hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}
         >
-          <Ionicons name="chevron-back" size={26} color="white" />
+          <Ionicons name="chevron-back" size={26} color="#111827" />
         </TouchableOpacity>
-        <Text className="text-white text-xl font-bold">编辑交易</Text>
+        <Text className="text-gray-900 text-xl font-bold">编辑交易</Text>
       </View>
 
       <ScrollView className="flex-1 px-4" keyboardShouldPersistTaps="handled">
         {/* 股票信息 */}
-        <Text className="text-gray-400 text-xs uppercase tracking-widest mb-3">
+        <Text className="text-gray-500 text-xs uppercase tracking-widest mb-3">
           股票信息
         </Text>
         <View className="flex-row gap-3 mb-5">
           <View className="flex-1">
             <Text className="text-gray-500 text-xs mb-1">名称</Text>
             <TextInput
-              className="bg-surface text-white px-4 rounded-xl"
-              style={{ height: 44 }}
+              className="bg-surface text-gray-900 px-4 rounded-xl"
+              style={{ height: 44, borderWidth: 1, borderColor: "#E5E7EB" }}
               value={stockName}
               onChangeText={setStockName}
               placeholder="如：贵州茅台"
-              placeholderTextColor="#6B7280"
+              placeholderTextColor="#9CA3AF"
             />
           </View>
           <View className="w-32">
             <Text className="text-gray-500 text-xs mb-1">代码</Text>
             <TextInput
-              className="bg-surface text-white px-4 rounded-xl"
-              style={{ height: 44 }}
+              className="bg-surface text-gray-900 px-4 rounded-xl"
+              style={{ height: 44, borderWidth: 1, borderColor: "#E5E7EB" }}
               value={stockCode}
               onChangeText={setStockCode}
               placeholder="600519"
-              placeholderTextColor="#6B7280"
+              placeholderTextColor="#9CA3AF"
               autoCapitalize="characters"
             />
           </View>
@@ -197,7 +196,7 @@ export default function EditTradeScreen() {
 
         {/* 买入记录 */}
         <View className="flex-row justify-between items-center mb-3">
-          <Text className="text-gray-400 text-xs uppercase tracking-widest">买入记录</Text>
+          <Text className="text-gray-500 text-xs uppercase tracking-widest">买入记录</Text>
           <TouchableOpacity
             className="flex-row items-center gap-1"
             onPress={() => addLot(setBuyLots)}
@@ -206,7 +205,8 @@ export default function EditTradeScreen() {
             <Text className="text-primary text-sm">添加</Text>
           </TouchableOpacity>
         </View>
-        <View className="bg-surface rounded-2xl p-3 mb-5">
+        <View className="bg-surface rounded-2xl p-3 mb-5"
+          style={{ borderWidth: 1, borderColor: "#E5E7EB" }}>
           {buyLots.map((lot, i) => (
             <LotRow
               key={i}
@@ -222,11 +222,11 @@ export default function EditTradeScreen() {
 
         {/* 卖出开关 */}
         <View className="flex-row items-center justify-between mb-3">
-          <Text className="text-gray-400 text-xs uppercase tracking-widest">已卖出</Text>
+          <Text className="text-gray-500 text-xs uppercase tracking-widest">已卖出</Text>
           <Switch
             value={hasSell}
             onValueChange={setHasSell}
-            trackColor={{ false: "#374151", true: "#059669" }}
+            trackColor={{ false: "#D1D5DB", true: "#059669" }}
             thumbColor="white"
           />
         </View>
@@ -235,7 +235,7 @@ export default function EditTradeScreen() {
         {hasSell && (
           <>
             <View className="flex-row justify-between items-center mb-3">
-              <Text className="text-gray-400 text-xs uppercase tracking-widest">卖出记录</Text>
+              <Text className="text-gray-500 text-xs uppercase tracking-widest">卖出记录</Text>
               <TouchableOpacity
                 className="flex-row items-center gap-1"
                 onPress={() => addLot(setSellLots)}
@@ -244,7 +244,8 @@ export default function EditTradeScreen() {
                 <Text className="text-primary text-sm">添加</Text>
               </TouchableOpacity>
             </View>
-            <View className="bg-surface rounded-2xl p-3 mb-5">
+            <View className="bg-surface rounded-2xl p-3 mb-5"
+              style={{ borderWidth: 1, borderColor: "#E5E7EB" }}>
               {sellLots.map((lot, i) => (
                 <LotRow
                   key={i}
@@ -263,11 +264,12 @@ export default function EditTradeScreen() {
         {/* 备注 */}
         <Text className="text-gray-500 text-xs mb-1">备注（可选）</Text>
         <TextInput
-          className="bg-surface text-white px-4 py-3 rounded-xl mb-4"
+          className="bg-surface text-gray-900 px-4 py-3 rounded-xl mb-4"
+          style={{ borderWidth: 1, borderColor: "#E5E7EB" }}
           value={notes}
           onChangeText={setNotes}
           placeholder="策略逻辑、心得..."
-          placeholderTextColor="#6B7280"
+          placeholderTextColor="#9CA3AF"
           multiline
         />
 

@@ -99,45 +99,46 @@ export default function StrategiesScreen() {
   }
 
   function renderItem({ item }: { item: StrategyWithStats }) {
-    const returnColor =
-      item.totalReturn === null
-        ? "text-gray-400"
-        : item.totalReturn >= 0
-        ? "text-primary"
-        : "text-danger";
+    const hasReturn = item.totalReturn !== null;
+    const returnColor = !hasReturn
+      ? "text-gray-400"
+      : item.totalReturn! >= 0
+      ? "text-primary"
+      : "text-danger";
 
     return (
       <TouchableOpacity
-        className="bg-surface rounded-2xl p-4 mb-3 mx-4"
+        className="bg-surface rounded-2xl px-5 pt-4 pb-4 mb-3 mx-4"
+        style={{ borderWidth: 1, borderColor: "#F3F4F6" }}
         onPress={() => router.push(`/strategy/${item.id}`)}
         activeOpacity={0.75}
       >
-        <View className="flex-row justify-between items-start mb-2">
-          <View className="flex-1 mr-2">
-            <Text className="text-white font-semibold text-base">{item.name}</Text>
-            {item.description ? (
-              <Text className="text-gray-500 text-xs mt-0.5" numberOfLines={1}>
-                {item.description}
-              </Text>
-            ) : null}
-          </View>
-          <View className="items-end">
-            <Text className={`text-base font-bold ${returnColor}`}>
-              {formatPercent(item.totalReturn)}
-            </Text>
-            <Text className={`text-xs ${returnColor}`}>
-              {formatCurrency(item.totalPnl)}
-            </Text>
-          </View>
-        </View>
-        <View className="flex-row items-center gap-3">
-          <Text className="text-gray-500 text-xs">{item.tradeCount} 笔</Text>
+        {/* Name */}
+        <Text className="text-gray-900 font-bold text-base mb-3" numberOfLines={1}>
+          {item.name}
+        </Text>
+
+        {/* Big return number */}
+        <Text className={`text-4xl font-bold ${returnColor} mb-0.5`}>
+          {formatPercent(item.totalReturn)}
+        </Text>
+        <Text className={`text-sm ${returnColor} mb-4`}>
+          {hasReturn ? formatCurrency(item.totalPnl) : "暂无已平仓交易"}
+        </Text>
+
+        {/* Bottom stats */}
+        <View className="flex-row items-center pt-3" style={{ borderTopWidth: 1, borderTopColor: "#F3F4F6" }}>
+          <Text className="text-gray-400 text-sm">{item.tradeCount} 笔</Text>
           {item.winRate !== null && (
-            <Text className="text-gray-500 text-xs">胜率 {item.winRate.toFixed(0)}%</Text>
+            <Text className="text-gray-400 text-sm ml-3">
+              胜率 {item.winRate.toFixed(0)}%
+            </Text>
           )}
           {item.openCount > 0 && (
-            <View className="bg-yellow-500/15 px-2 py-0.5 rounded-md">
-              <Text className="text-yellow-400 text-xs">{item.openCount} 持仓中</Text>
+            <View className="ml-auto bg-amber-50 px-2 py-0.5 rounded-md">
+              <Text className="text-amber-600 text-xs font-medium">
+                {item.openCount} 持仓中
+              </Text>
             </View>
           )}
         </View>
@@ -148,19 +149,20 @@ export default function StrategiesScreen() {
   return (
     <View className="flex-1 bg-background">
       <View className="px-4 pt-14 pb-4 flex-row justify-between items-center">
-        <Text className="text-white text-2xl font-bold">AlphaBook</Text>
+        <Text className="text-gray-900 text-2xl font-bold">AlphaBook</Text>
         <TouchableOpacity onPress={() => supabase.auth.signOut()}>
-          <Ionicons name="log-out-outline" size={24} color="#6B7280" />
+          <Ionicons name="log-out-outline" size={24} color="#9CA3AF" />
         </TouchableOpacity>
       </View>
 
       {/* 内联新建输入框 */}
       {showInput && (
-        <View className="mx-4 mb-3 bg-surface rounded-2xl p-3 flex-row items-center gap-2">
+        <View className="mx-4 mb-3 bg-surface rounded-2xl p-3 flex-row items-center gap-2"
+          style={{ borderWidth: 1, borderColor: "#E5E7EB" }}>
           <TextInput
-            className="flex-1 text-white text-base px-2"
+            className="flex-1 text-gray-900 text-base px-2"
             placeholder="策略名称..."
-            placeholderTextColor="#6B7280"
+            placeholderTextColor="#9CA3AF"
             value={newName}
             onChangeText={setNewName}
             autoFocus
@@ -176,7 +178,7 @@ export default function StrategiesScreen() {
             </Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => { setShowInput(false); setNewName(""); }}>
-            <Ionicons name="close" size={22} color="#6B7280" />
+            <Ionicons name="close" size={22} color="#9CA3AF" />
           </TouchableOpacity>
         </View>
       )}
@@ -195,7 +197,7 @@ export default function StrategiesScreen() {
         ListEmptyComponent={
           !loading ? (
             <View className="items-center mt-20">
-              <Text className="text-gray-500 text-base">
+              <Text className="text-gray-400 text-base">
                 还没有策略，点击 + 新建
               </Text>
             </View>
@@ -205,6 +207,7 @@ export default function StrategiesScreen() {
 
       <TouchableOpacity
         className="absolute bottom-8 right-6 bg-primary w-14 h-14 rounded-full items-center justify-center"
+        style={{ elevation: 4 }}
         onPress={() => setShowInput(true)}
       >
         <Ionicons name="add" size={32} color="white" />

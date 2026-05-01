@@ -56,32 +56,33 @@ function TotalReturnChart({ data }: { data: ChartPoint[] }) {
     ` L${px(data.length - 1).toFixed(1)},${zero.toFixed(1)} L${px(0).toFixed(1)},${zero.toFixed(1)} Z`;
 
   return (
-    <View className="mx-4 mb-4 bg-surface rounded-2xl p-3">
-      <Text className="text-gray-400 text-xs mb-2">总累计收益率走势</Text>
+    <View className="mx-4 mb-4 bg-surface rounded-2xl p-3"
+      style={{ borderWidth: 1, borderColor: "#F3F4F6" }}>
+      <Text className="text-gray-500 text-xs mb-2">总累计收益率走势</Text>
       <Svg width={W} height={H}>
         <Defs>
           <LinearGradient id="totalGrad" x1="0" y1="0" x2="0" y2="1">
-            <Stop offset="0" stopColor={lineColor} stopOpacity="0.3" />
+            <Stop offset="0" stopColor={lineColor} stopOpacity="0.2" />
             <Stop offset="1" stopColor={lineColor} stopOpacity="0" />
           </LinearGradient>
         </Defs>
         <SvgLine x1={PAD.left} y1={zero} x2={W - PAD.right} y2={zero}
-          stroke="#374151" strokeWidth="1" strokeDasharray="4,3" />
+          stroke="#E5E7EB" strokeWidth="1" strokeDasharray="4,3" />
         <Path d={areaPath} fill="url(#totalGrad)" />
         <Path d={linePath} stroke={lineColor} strokeWidth="2" fill="none" strokeLinejoin="round" />
-        <SvgText x={PAD.left - 4} y={PAD.top + 4} fontSize="9" fill="#6B7280" textAnchor="end">
+        <SvgText x={PAD.left - 4} y={PAD.top + 4} fontSize="9" fill="#9CA3AF" textAnchor="end">
           {maxY >= 0 ? `+${maxY.toFixed(1)}%` : `${maxY.toFixed(1)}%`}
         </SvgText>
-        <SvgText x={PAD.left - 4} y={zero + 3} fontSize="9" fill="#6B7280" textAnchor="end">0%</SvgText>
+        <SvgText x={PAD.left - 4} y={zero + 3} fontSize="9" fill="#9CA3AF" textAnchor="end">0%</SvgText>
         {minY < 0 && (
-          <SvgText x={PAD.left - 4} y={H - PAD.bottom + 4} fontSize="9" fill="#6B7280" textAnchor="end">
+          <SvgText x={PAD.left - 4} y={H - PAD.bottom + 4} fontSize="9" fill="#9CA3AF" textAnchor="end">
             {`${minY.toFixed(1)}%`}
           </SvgText>
         )}
-        <SvgText x={px(0)} y={H - 4} fontSize="9" fill="#6B7280" textAnchor="middle">
+        <SvgText x={px(0)} y={H - 4} fontSize="9" fill="#9CA3AF" textAnchor="middle">
           {data[0].label}
         </SvgText>
-        <SvgText x={px(data.length - 1)} y={H - 4} fontSize="9" fill="#6B7280" textAnchor="middle">
+        <SvgText x={px(data.length - 1)} y={H - 4} fontSize="9" fill="#9CA3AF" textAnchor="middle">
           {data[data.length - 1].label}
         </SvgText>
       </Svg>
@@ -91,9 +92,10 @@ function TotalReturnChart({ data }: { data: ChartPoint[] }) {
 
 function StatCard({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
-    <View className="bg-surface rounded-2xl p-4 flex-1">
-      <Text className="text-gray-400 text-xs mb-1">{label}</Text>
-      <Text className={`text-xl font-bold ${color ?? "text-white"}`}>{value}</Text>
+    <View className="bg-surface rounded-2xl p-4 flex-1"
+      style={{ borderWidth: 1, borderColor: "#F3F4F6" }}>
+      <Text className="text-gray-500 text-xs mb-1">{label}</Text>
+      <Text className={`text-xl font-bold ${color ?? "text-gray-900"}`}>{value}</Text>
     </View>
   );
 }
@@ -114,15 +116,15 @@ function StrategyBarChart({ bars }: { bars: StrategyBar[] }) {
   const gap = innerW / bars.length;
 
   return (
-    <View className="mx-4 mb-4 bg-surface rounded-2xl p-3">
-      <Text className="text-gray-400 text-xs mb-2">各策略收益率对比</Text>
+    <View className="mx-4 mb-4 bg-surface rounded-2xl p-3"
+      style={{ borderWidth: 1, borderColor: "#F3F4F6" }}>
+      <Text className="text-gray-500 text-xs mb-2">各策略收益率对比</Text>
       <Svg width={BW} height={BH}>
-        {/* 零线 */}
         <SvgLine
           x1={BPAD.left} y1={zeroY} x2={BW - BPAD.right} y2={zeroY}
-          stroke="#374151" strokeWidth="1" strokeDasharray="4,3"
+          stroke="#E5E7EB" strokeWidth="1" strokeDasharray="4,3"
         />
-        <SvgText x={BPAD.left} y={zeroY - 3} fontSize="8" fill="#6B7280">0%</SvgText>
+        <SvgText x={BPAD.left} y={zeroY - 3} fontSize="8" fill="#9CA3AF">0%</SvgText>
 
         {bars.map((bar, i) => {
           const rate = bar.rate ?? 0;
@@ -138,7 +140,7 @@ function StrategyBarChart({ bars }: { bars: StrategyBar[] }) {
               <Rect x={x} y={y} width={barW} height={Math.max(barH, 2)} fill={color} rx={3} />
               <SvgText
                 x={x + barW / 2} y={BH - 2}
-                fontSize="9" fill="#6B7280" textAnchor="middle"
+                fontSize="9" fill="#9CA3AF" textAnchor="middle"
               >
                 {label}
               </SvgText>
@@ -217,7 +219,6 @@ export default function StatsScreen() {
       avgReturn,
     });
 
-    // 各策略收益率
     const bars: StrategyBar[] = (strategiesRes.data ?? []).map((s: any) => {
       const sClosed = (s.trades as Trade[]).filter((t) => !isOpen(t));
       if (sClosed.length === 0) return { name: s.name, rate: null };
@@ -227,7 +228,6 @@ export default function StatsScreen() {
     });
     setStrategyBars(bars);
 
-    // 总累计收益率曲线：所有已平仓交易按卖出日期排序
     const sortedClosed = [...closed].sort((a, b) => {
       const da = a.sell_lots[a.sell_lots.length - 1]?.date ?? "";
       const db = b.sell_lots[b.sell_lots.length - 1]?.date ?? "";
@@ -260,14 +260,15 @@ export default function StatsScreen() {
       refreshControl={<RefreshControl refreshing={loading} onRefresh={fetchStats} tintColor="#10B981" />}
     >
       <View className="px-4 pt-14 pb-4">
-        <Text className="text-white text-2xl font-bold">总体统计</Text>
+        <Text className="text-gray-900 text-2xl font-bold">总体统计</Text>
       </View>
 
       {stats && (
         <>
           {/* 总收益 */}
-          <View className="mx-4 mb-4 bg-surface rounded-2xl p-5">
-            <Text className="text-gray-400 text-sm mb-1">总收益率（已平仓）</Text>
+          <View className="mx-4 mb-4 bg-surface rounded-2xl p-5"
+            style={{ borderWidth: 1, borderColor: "#F3F4F6" }}>
+            <Text className="text-gray-500 text-sm mb-1">总收益率（已平仓）</Text>
             <Text className={`text-4xl font-bold mb-1 ${returnColor}`}>
               {formatPercent(stats.totalReturn)}
             </Text>
@@ -276,13 +277,10 @@ export default function StatsScreen() {
             </Text>
           </View>
 
-          {/* 总累计收益率曲线 */}
           <TotalReturnChart data={totalChartData} />
 
-          {/* 策略对比柱状图 */}
           {strategyBars.length > 1 && <StrategyBarChart bars={strategyBars} />}
 
-          {/* 交易统计 */}
           <View className="mx-4 mb-4 flex-row gap-3">
             <StatCard label="总交易数" value={String(stats.totalTrades)} />
             <StatCard label="胜率" value={stats.winRate !== null ? `${stats.winRate.toFixed(1)}%` : "--"} />
@@ -295,14 +293,14 @@ export default function StatsScreen() {
             <StatCard label="持仓中" value={String(stats.openTrades)} />
           </View>
 
-          {/* 最佳/最差 */}
           {stats.bestTrade && (
-            <View className="mx-4 mb-3 bg-surface rounded-2xl p-4">
-              <Text className="text-gray-400 text-xs mb-2">最佳交易</Text>
+            <View className="mx-4 mb-3 bg-surface rounded-2xl p-4"
+              style={{ borderWidth: 1, borderColor: "#F3F4F6" }}>
+              <Text className="text-gray-500 text-xs mb-2">最佳交易</Text>
               <View className="flex-row justify-between items-center">
                 <View>
-                  <Text className="text-white font-semibold">{stats.bestTrade.stock_name}</Text>
-                  <Text className="text-gray-500 text-xs">{stats.bestTrade.stock_code}</Text>
+                  <Text className="text-gray-900 font-semibold">{stats.bestTrade.stock_name}</Text>
+                  <Text className="text-gray-400 text-xs">{stats.bestTrade.stock_code}</Text>
                 </View>
                 <Text className="text-primary text-lg font-bold">{formatPercent(stats.bestTrade.rate)}</Text>
               </View>
@@ -310,12 +308,13 @@ export default function StatsScreen() {
           )}
 
           {stats.worstTrade && (
-            <View className="mx-4 mb-6 bg-surface rounded-2xl p-4">
-              <Text className="text-gray-400 text-xs mb-2">最差交易</Text>
+            <View className="mx-4 mb-6 bg-surface rounded-2xl p-4"
+              style={{ borderWidth: 1, borderColor: "#F3F4F6" }}>
+              <Text className="text-gray-500 text-xs mb-2">最差交易</Text>
               <View className="flex-row justify-between items-center">
                 <View>
-                  <Text className="text-white font-semibold">{stats.worstTrade.stock_name}</Text>
-                  <Text className="text-gray-500 text-xs">{stats.worstTrade.stock_code}</Text>
+                  <Text className="text-gray-900 font-semibold">{stats.worstTrade.stock_name}</Text>
+                  <Text className="text-gray-400 text-xs">{stats.worstTrade.stock_code}</Text>
                 </View>
                 <Text className="text-danger text-lg font-bold">{formatPercent(stats.worstTrade.rate)}</Text>
               </View>
@@ -326,7 +325,7 @@ export default function StatsScreen() {
 
       {!loading && !stats?.totalTrades && (
         <View className="items-center mt-20">
-          <Text className="text-gray-500">还没有交易记录</Text>
+          <Text className="text-gray-400">还没有交易记录</Text>
         </View>
       )}
     </ScrollView>

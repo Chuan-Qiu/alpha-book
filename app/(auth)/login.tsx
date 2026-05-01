@@ -44,22 +44,24 @@ export default function LoginScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
     >
       <View className="flex-1 justify-center px-8">
-        <Text className="text-4xl font-bold text-white mb-2">AlphaBook</Text>
-        <Text className="text-gray-400 mb-10">策略交易记录本</Text>
+        <Text className="text-4xl font-bold text-gray-900 mb-2">AlphaBook</Text>
+        <Text className="text-gray-500 mb-10">策略交易记录本</Text>
 
         <TextInput
-          className="bg-surface text-white px-4 py-3 rounded-xl mb-3"
+          className="bg-surface text-gray-900 px-4 py-3 rounded-xl mb-3"
+          style={{ borderWidth: 1, borderColor: "#E5E7EB" }}
           placeholder="邮箱"
-          placeholderTextColor="#6B7280"
+          placeholderTextColor="#9CA3AF"
           value={email}
           onChangeText={setEmail}
           autoCapitalize="none"
           keyboardType="email-address"
         />
         <TextInput
-          className="bg-surface text-white px-4 py-3 rounded-xl mb-6"
+          className="bg-surface text-gray-900 px-4 py-3 rounded-xl mb-6"
+          style={{ borderWidth: 1, borderColor: "#E5E7EB" }}
           placeholder="密码"
-          placeholderTextColor="#6B7280"
+          placeholderTextColor="#9CA3AF"
           value={password}
           onChangeText={setPassword}
           secureTextEntry
@@ -86,7 +88,7 @@ export default function LoginScreen() {
           className="mt-4 items-center"
           onPress={() => setIsRegister(!isRegister)}
         >
-          <Text className="text-gray-400">
+          <Text className="text-gray-500">
             {isRegister ? "已有账号？登录" : "没有账号？注册"}
           </Text>
         </TouchableOpacity>

@@ -54,13 +54,12 @@ export function DatePickerInput({ value, onChange }: Props) {
   }
 
   function selectToday() {
-    const now = new Date();
-    onChange(now.toISOString().slice(0, 10));
+    onChange(new Date().toISOString().slice(0, 10));
     setOpen(false);
   }
 
   const daysInMonth = new Date(viewYear, viewMonth + 1, 0).getDate();
-  const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7; // Mon=0
+  const firstDow = (new Date(viewYear, viewMonth, 1).getDay() + 6) % 7;
   const cells: (number | null)[] = [
     ...Array(firstDow).fill(null),
     ...Array.from({ length: daysInMonth }, (_, i) => i + 1),
@@ -81,7 +80,6 @@ export function DatePickerInput({ value, onChange }: Props) {
   const isToday = (day: number) =>
     day === todayDay && viewMonth === todayMonth && viewYear === todayYear;
 
-  // cell size: 7 × 36 = 252px, fits inside 290px modal with p-4
   const CELL = 36;
   const DOT = 30;
 
@@ -90,10 +88,10 @@ export function DatePickerInput({ value, onChange }: Props) {
       <TouchableOpacity
         onPress={handleOpen}
         className="bg-surface flex-row items-center px-3 rounded-lg"
-        style={{ height: 36 }}
+        style={{ height: 36, borderWidth: 1, borderColor: "#E5E7EB" }}
       >
-        <Ionicons name="calendar-outline" size={14} color="#6B7280" />
-        <Text className="text-white text-sm ml-2 flex-1">
+        <Ionicons name="calendar-outline" size={14} color="#9CA3AF" />
+        <Text className="text-gray-900 text-sm ml-2 flex-1">
           {value || "选择日期"}
         </Text>
       </TouchableOpacity>
@@ -105,23 +103,32 @@ export function DatePickerInput({ value, onChange }: Props) {
         onRequestClose={() => setOpen(false)}
       >
         <TouchableOpacity
-          style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.55)", justifyContent: "center", alignItems: "center" }}
+          style={{ flex: 1, backgroundColor: "rgba(0,0,0,0.3)", justifyContent: "center", alignItems: "center" }}
           activeOpacity={1}
           onPress={() => setOpen(false)}
         >
-          {/* Stop press propagation on the card */}
           <TouchableOpacity activeOpacity={1} onPress={() => {}}>
-            <View style={{ backgroundColor: "#1F2937", borderRadius: 20, padding: 16, width: 290 }}>
+            <View style={{
+              backgroundColor: "#FFFFFF",
+              borderRadius: 20,
+              padding: 16,
+              width: 290,
+              shadowColor: "#000",
+              shadowOffset: { width: 0, height: 8 },
+              shadowOpacity: 0.12,
+              shadowRadius: 24,
+              elevation: 8,
+            }}>
               {/* Month nav */}
               <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
                 <TouchableOpacity onPress={prevMonth} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                  <Ionicons name="chevron-back" size={20} color="white" />
+                  <Ionicons name="chevron-back" size={20} color="#111827" />
                 </TouchableOpacity>
-                <Text style={{ color: "white", fontWeight: "600", fontSize: 14 }}>
+                <Text style={{ color: "#111827", fontWeight: "600", fontSize: 14 }}>
                   {viewYear}年{viewMonth + 1}月
                 </Text>
                 <TouchableOpacity onPress={nextMonth} hitSlop={{ top: 10, bottom: 10, left: 10, right: 10 }}>
-                  <Ionicons name="chevron-forward" size={20} color="white" />
+                  <Ionicons name="chevron-forward" size={20} color="#111827" />
                 </TouchableOpacity>
               </View>
 
@@ -129,7 +136,7 @@ export function DatePickerInput({ value, onChange }: Props) {
               <View style={{ flexDirection: "row", marginBottom: 4 }}>
                 {WEEKDAYS.map((d) => (
                   <View key={d} style={{ width: CELL, alignItems: "center" }}>
-                    <Text style={{ color: "#6B7280", fontSize: 11 }}>{d}</Text>
+                    <Text style={{ color: "#9CA3AF", fontSize: 11 }}>{d}</Text>
                   </View>
                 ))}
               </View>
@@ -158,7 +165,7 @@ export function DatePickerInput({ value, onChange }: Props) {
                           <Text
                             style={{
                               fontSize: 13,
-                              color: selected ? "white" : today ? "#10B981" : "#E5E7EB",
+                              color: selected ? "white" : today ? "#10B981" : "#111827",
                               fontWeight: selected || today ? "700" : "400",
                             }}
                           >
@@ -181,11 +188,11 @@ export function DatePickerInput({ value, onChange }: Props) {
                   paddingVertical: 8,
                   borderRadius: 10,
                   borderWidth: 1,
-                  borderColor: "#374151",
+                  borderColor: "#E5E7EB",
                   alignItems: "center",
                 }}
               >
-                <Text style={{ color: "#9CA3AF", fontSize: 13 }}>今天</Text>
+                <Text style={{ color: "#6B7280", fontSize: 13 }}>今天</Text>
               </TouchableOpacity>
             </View>
           </TouchableOpacity>

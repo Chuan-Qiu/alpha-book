@@ -22,10 +22,10 @@ export function LotRow({ lot, index, onUpdate, onRemove, onCopy, canRemove }: Lo
     <View className="bg-background rounded-xl p-3 mb-2">
       {/* Row header */}
       <View className="flex-row justify-between items-center mb-2">
-        <Text className="text-gray-500 text-xs">第 {index + 1} 笔</Text>
+        <Text className="text-gray-400 text-xs">第 {index + 1} 笔</Text>
         <View className="flex-row gap-3">
           <TouchableOpacity onPress={onCopy} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
-            <Ionicons name="copy-outline" size={15} color="#6B7280" />
+            <Ionicons name="copy-outline" size={15} color="#9CA3AF" />
           </TouchableOpacity>
           {canRemove && (
             <TouchableOpacity onPress={onRemove} hitSlop={{ top: 8, bottom: 8, left: 8, right: 8 }}>
@@ -46,25 +46,25 @@ export function LotRow({ lot, index, onUpdate, onRemove, onCopy, canRemove }: Lo
         <View className="flex-1">
           <Text className="text-gray-500 text-xs mb-1">价格（元）</Text>
           <TextInput
-            className="bg-surface text-white px-3 rounded-lg text-sm"
-            style={{ height: 36 }}
+            className="bg-surface text-gray-900 px-3 rounded-lg text-sm"
+            style={{ height: 36, borderWidth: 1, borderColor: "#E5E7EB" }}
             value={lot.price}
             onChangeText={(v) => onUpdate("price", v)}
             keyboardType="decimal-pad"
             placeholder="0.00"
-            placeholderTextColor="#6B7280"
+            placeholderTextColor="#9CA3AF"
           />
         </View>
         <View className="flex-1">
           <Text className="text-gray-500 text-xs mb-1">数量（股）</Text>
           <TextInput
-            className="bg-surface text-white px-3 rounded-lg text-sm"
-            style={{ height: 36 }}
+            className="bg-surface text-gray-900 px-3 rounded-lg text-sm"
+            style={{ height: 36, borderWidth: 1, borderColor: "#E5E7EB" }}
             value={lot.quantity}
             onChangeText={(v) => onUpdate("quantity", v)}
             keyboardType="numeric"
             placeholder="0"
-            placeholderTextColor="#6B7280"
+            placeholderTextColor="#9CA3AF"
           />
         </View>
       </View>
