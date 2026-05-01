@@ -10,22 +10,23 @@ import {
 import { useRouter, useFocusEffect } from "expo-router";
 import { Ionicons } from "@expo/vector-icons";
 import { supabase } from "@/lib/supabase";
-import { Strategy, Trade, formatPercent, isOpen } from "@/types";
+import { Strategy, Trade, formatPercent, formatCurrency, isOpen } from "@/types";
 
 interface StrategyWithStats extends Strategy {
   tradeCount: number;
   openCount: number;
   totalReturn: number | null;
+  totalPnl: number | null;
   winRate: number | null;
 }
 
 function computeStats(
   trades: Trade[]
-): Pick<StrategyWithStats, "tradeCount" | "openCount" | "totalReturn" | "winRate"> {
+): Pick<StrategyWithStats, "tradeCount" | "openCount" | "totalReturn" | "totalPnl" | "winRate"> {
   const closed = trades.filter((t) => !isOpen(t));
   const tradeCount = trades.length;
   const openCount = trades.length - closed.length;
-  if (closed.length === 0) return { tradeCount, openCount, totalReturn: null, winRate: null };
+  if (closed.length === 0) return { tradeCount, openCount, totalReturn: null, totalPnl: null, winRate: null };
 
   let totalCost = 0;
   let totalRevenue = 0;
@@ -43,6 +44,7 @@ function computeStats(
     tradeCount,
     openCount,
     totalReturn: totalCost > 0 ? ((totalRevenue - totalCost) / totalCost) * 100 : null,
+    totalPnl: totalRevenue - totalCost,
     winRate: (wins / closed.length) * 100,
   };
 }
@@ -119,9 +121,14 @@ export default function StrategiesScreen() {
               </Text>
             ) : null}
           </View>
-          <Text className={`text-lg font-bold ${returnColor}`}>
-            {formatPercent(item.totalReturn)}
-          </Text>
+          <View className="items-end">
+            <Text className={`text-base font-bold ${returnColor}`}>
+              {formatPercent(item.totalReturn)}
+            </Text>
+            <Text className={`text-xs ${returnColor}`}>
+              {formatCurrency(item.totalPnl)}
+            </Text>
+          </View>
         </View>
         <View className="flex-row items-center gap-3">
           <Text className="text-gray-500 text-xs">{item.tradeCount} 笔</Text>

@@ -234,6 +234,7 @@ export default function StrategyDetailScreen() {
     (s, t) => s + t.sell_lots.reduce((a, l) => a + l.price * l.quantity, 0), 0
   );
   const totalReturn = totalCost > 0 ? ((totalRevenue - totalCost) / totalCost) * 100 : null;
+  const totalPnl = closed.length > 0 ? totalRevenue - totalCost : null;
   const wins = closed.filter((t) => {
     const cost = t.buy_lots.reduce((a, l) => a + l.price * l.quantity, 0);
     const rev = t.sell_lots.reduce((a, l) => a + l.price * l.quantity, 0);
@@ -279,6 +280,9 @@ export default function StrategyDetailScreen() {
             <Text className="text-gray-400 text-xs mb-1">总收益率</Text>
             <Text className={`text-2xl font-bold ${returnColor}`}>
               {formatPercent(totalReturn)}
+            </Text>
+            <Text className={`text-xs mt-0.5 ${returnColor}`}>
+              {formatCurrency(totalPnl)}
             </Text>
           </View>
           <View className="items-center">
